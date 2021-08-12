@@ -6,16 +6,17 @@
     "build": "rimraf ./build && tsc",
     "start:dev": "nodemon",
     "start": "npm run build && node build/index.js",
-    "lint": "eslint ./src --ext .ts",
-    "lint:format": "eslint ./src --ext .js,.ts --fix",
-    "clean": "rimraf build/*",
-    "prettier": "prettier src/ --write",
-    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "prettier-watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}"
+    "lint": "npx eslint src/**/*.ts --ext .ts",
+    "lint:format": "eslint src/** --ext .ts --fix",
+    "clean": "rimraf build",
+    "prettier": "prettier src/** --write",
+    "prettier-format": "prettier --config .prettierrc src/** --write",
+    "prettier-watch": "onchange src/**/*.ts -- prettier --write {{changed}}",
+    "test": ""
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test && npm run prettier-format && npm run lint"
+      "pre-commit": "npm run prettier-format && npm run lint"
     }
   },
   "dependencies": {
