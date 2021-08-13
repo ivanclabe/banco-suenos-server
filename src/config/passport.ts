@@ -2,7 +2,7 @@ import passport from 'passport';
 import passportLocal from 'passport-local';
 import { NativeError } from 'mongoose';
 
-import { User, IUserDocument } from '../models/User.model';
+import { User, IUserDocument } from '../models/user.model';
 
 const LocalStrategy = passportLocal.Strategy;
 

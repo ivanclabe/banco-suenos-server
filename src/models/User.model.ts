@@ -1,31 +1,27 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
+import IUser from '../interfaces/IUser';
 
-export const DOCUMENT_NAME = 'User';
-export const COLLECTION_NAME = 'users';
+export interface IUserDocument extends IUser, Document {}
 
-export interface IUserDocument extends Document {
-  nit: string;
-  password: string;
-  firstname: string;
-  lastname: string;
-}
-
-const userSchema: Schema = new Schema(
-  {
-    nit: { type: String, unique: true },
-    password: String,
-    firstname: {
-      type: String,
-      required: true
-    },
-    lastname: {
-      type: String,
-      required: true
-    }
+const userSchema = new Schema<IUserDocument>({
+  identification: { type: String, unique: true },
+  password: { type: String, required: true },
+  firstname: {
+    type: String,
+    required: true
   },
-  { timestamps: { createdAt: 'dateJoined', updatedAt: 'lastLogin' } }
-);
+  lastname: {
+    type: String,
+    required: true
+  },
+  account: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Account'
+    }
+  ]
+});
 
 /**
  * Password hash middleware.
