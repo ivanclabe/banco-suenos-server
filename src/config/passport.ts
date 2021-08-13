@@ -18,30 +18,21 @@ passport.deserializeUser((id, done) => {
  * Sign in using Email and Password.
  */
 passport.use(
-  new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-    User.findOne(
-      { email: email.toLowerCase() },
-      (err: NativeError, user: IUserDocument) => {
-        if (err) {
-          return done(err);
+  new LocalStrategy(
+    { usernameField: 'email' },
+    async (email, password, done) => {
+      try {
+        const userFound: any = await User.findOne({
+          email: email.toLowerCase()
+        });
+        if (!userFound) {
+          return done('User Not Found', undefined);
         }
-        if (!user) {
-          return done(undefined, false, {
-            message: `Email ${email} not found.`
-          });
-        }
-        // user.comparePassword(password, (err: Error, isMatch: boolean) => {
-        //   if (err) {
-        //     return done(err);
-        //   }
-        //   if (isMatch) {
-        //     return done(undefined, user);
-        //   }
-        //   return done(undefined, false, {
-        //     message: 'Invalid email or password.'
-        //   });
-        // });
+
+        return done(undefined, userFound);
+      } catch (error) {
+        return done(error);
       }
-    );
-  })
+    }
+  )
 );

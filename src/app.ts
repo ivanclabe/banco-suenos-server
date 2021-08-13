@@ -2,6 +2,8 @@ import createError from 'http-errors';
 import express from 'express';
 import logger from 'morgan';
 
+import userRoute from './routes/user.route';
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -9,9 +11,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('*', (req, res) => {
-  res.send('<h1>Welcome to your simple server! Awesome right</h1>');
-});
+app.use('/users', userRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
