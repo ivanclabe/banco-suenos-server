@@ -1,13 +1,17 @@
 import { Request, Response } from 'express';
 import { IUserRepo } from '../repositories/user.repo';
 
+export interface IUserController {
+  handleGetUsers(req: Request, res: Response): Promise<Response>;
+}
+
 /**
  * @class UserController
  * @desc Responsible for handling API requests for the
- * /user route.
+ * /users route.
  **/
 
-export default class UserController {
+export default class UserController implements IUserController {
   private userRepo: IUserRepo;
 
   constructor(userRepo: IUserRepo) {

@@ -1,7 +1,11 @@
+import IAccount from './IAccount';
+
 export default interface IUser {
   identification: string;
-  password: string;
+  hashedPassword: string;
   firstname: string;
   lastname: string;
-  account?: string[];
+  account?: (IAccount | string)[];
+  lastLogin: Date;
+  dateJoined: Date;
 }

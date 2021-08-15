@@ -1,9 +1,13 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Model, Document } from 'mongoose';
 import IAccount from '../interfaces/IAccount';
 
 export interface IAccountDocument extends IAccount, Document {}
 
-const accountSchema = new Schema<IAccountDocument>(
+export interface IAccountModel extends Model<IAccountDocument> {
+  findByNumber(number: string): Promise<IAccountDocument>;
+}
+
+const accountSchema: Schema<IAccountDocument> = new Schema(
   {
     number: { type: String, unique: true },
     user: {
@@ -14,4 +18,15 @@ const accountSchema = new Schema<IAccountDocument>(
   { timestamps: true }
 );
 
-export const Account = model<IAccountDocument>('Account', accountSchema);
+accountSchema.statics.findByNumber = function(
+  number: string
+): Promise<IAccountDocument> {
+  return this.findOne({ number });
+};
+
+const Account = model<IAccountDocument, IAccountModel>(
+  'Account',
+  accountSchema
+);
+
+export default Account;
