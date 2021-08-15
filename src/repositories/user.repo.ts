@@ -12,7 +12,7 @@ export interface IUserRepo {
 }
 
 export default class UserRepo implements IUserRepo {
-  private model: IUserModel;
+  private readonly model: IUserModel;
 
   constructor(model: IUserModel) {
     this.model = model;

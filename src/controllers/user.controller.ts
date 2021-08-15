@@ -12,14 +12,14 @@ export interface IUserController {
  **/
 
 export default class UserController implements IUserController {
-  private userRepo: IUserRepo;
+  private readonly repository: IUserRepo;
 
   constructor(userRepo: IUserRepo) {
-    this.userRepo = userRepo;
+    this.repository = userRepo;
   }
 
   async handleGetUsers(req: Request, res: Response): Promise<Response> {
-    const users = await this.userRepo.getUsers();
+    const users = await this.repository.getUsers();
     return res.status(200).json({ users });
   }
 }

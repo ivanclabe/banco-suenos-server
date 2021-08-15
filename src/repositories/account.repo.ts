@@ -12,7 +12,7 @@ export interface IAccountRepo {
 }
 
 export default class AccountRepo implements IAccountRepo {
-  private model: IAccountModel;
+  private readonly model: IAccountModel;
 
   constructor(model: IAccountModel) {
     this.model = model;

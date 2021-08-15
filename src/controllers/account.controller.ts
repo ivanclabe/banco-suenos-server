@@ -12,14 +12,14 @@ export interface IAccountController {
  **/
 
 export default class AccountController implements IAccountController {
-  private accountRepo: IAccountRepo;
+  private readonly repository: IAccountRepo;
 
   constructor(accountRepo: IAccountRepo) {
-    this.accountRepo = accountRepo;
+    this.repository = accountRepo;
   }
 
   async handleGetAccounts(req: Request, res: Response): Promise<Response> {
-    const accounts = await this.accountRepo.getAccounts();
+    const accounts = await this.repository.getAccounts();
     return res.status(200).json({ accounts });
   }
 }

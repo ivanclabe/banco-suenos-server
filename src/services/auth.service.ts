@@ -4,7 +4,10 @@ import UserRepo from '../repositories/user.repo';
 const userRepo = new UserRepo(User);
 
 export default class AuthService {
-  static async deserializeUser(id: string, done: any): Promise<void> {
+  static async deserializeUser(
+    id: string,
+    done: (error: any, user?: Express.User | false | null) => void
+  ): Promise<void> {
     try {
       const decerializedUser: IUserDocument | null = await userRepo.getUserById(
         id
@@ -21,7 +24,7 @@ export default class AuthService {
   static async verifyUser(
     identification: string,
     password: string,
-    done: any
+    done: (error: any, user?: Express.User | false | null) => void
   ): Promise<void> {
     try {
       const userFound: IUserDocument = await User.findByIdentification(
