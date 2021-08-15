@@ -6,6 +6,7 @@ export default interface IUser {
   firstname: string;
   lastname: string;
   account?: (IAccount | string)[];
+  phone?: string;
   lastLogin: Date;
   dateJoined: Date;
 }
