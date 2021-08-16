@@ -32,7 +32,6 @@
     }
   },
   "dependencies": {
-    "@typegoose/typegoose": "^8.1.1",
     "cookie-parser": "~1.4.4",
     "cross-env": "^7.0.3",
     "debug": "~2.6.9",
@@ -44,8 +43,7 @@
     "morgan": "~1.9.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^6.1.0"
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

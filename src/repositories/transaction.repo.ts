@@ -2,6 +2,7 @@ import {
   ITransactionModel,
   ITransactionDocument
 } from '../models/transaction.model';
+import { ITransactionDocumentOrNull } from '../Types';
 
 /**
  * @interface ITransactionRepo
@@ -9,7 +10,7 @@ import {
  **/
 
 export interface ITransactionRepo {
-  getTransactionById(id: string): Promise<ITransactionDocument | null>;
+  getTransactionById(id: string): Promise<ITransactionDocumentOrNull>;
   getTransactions(): Promise<ITransactionDocument[]>;
 }
 
@@ -20,7 +21,7 @@ export default class TransactionRepo implements ITransactionRepo {
     this.model = model;
   }
 
-  async getTransactionById(id: string): Promise<ITransactionDocument | null> {
+  async getTransactionById(id: string): Promise<ITransactionDocumentOrNull> {
     return await this.model.findById(id);
   }
 

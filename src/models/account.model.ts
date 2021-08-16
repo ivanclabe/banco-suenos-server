@@ -15,7 +15,7 @@ const accountSchema: Schema<IAccountDocument> = new Schema(
       ref: 'User'
     }
   },
-  { timestamps: true }
+  { collection: 'accounts', timestamps: true }
 );
 
 accountSchema.statics.findByNumber = function(

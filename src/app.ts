@@ -2,7 +2,10 @@ import createError from 'http-errors';
 import express from 'express';
 import logger from 'morgan';
 
+import DBRun from './db';
 import userRoute from './routes/user.route';
+
+DBRun();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,14 +23,19 @@ app.use(function(req, res, next) {
 
 // error handler
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use(function(err, req, res, next) {
+app.use(function(error, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.message = error.message;
+  res.locals.error = req.app.get('env') === 'development' ? error : {};
 
+  console.log(error);
   // render the error pages
-  res.status(err.status || 500);
-  res.render('error');
+  res
+    .status(error.status || 500)
+    .type('application/json')
+    .json({
+      error
+    });
 });
 
 app.listen({ port: PORT }, () => {

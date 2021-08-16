@@ -1,4 +1,5 @@
 import { IAccountModel, IAccountDocument } from '../models/account.model';
+import { IAccountDocumentOrNull } from '../Types';
 
 /**
  * @interface IAccountRepo
@@ -6,7 +7,7 @@ import { IAccountModel, IAccountDocument } from '../models/account.model';
  **/
 
 export interface IAccountRepo {
-  getAccountById(id: string): Promise<IAccountDocument | null>;
+  getAccountById(id: string): Promise<IAccountDocumentOrNull>;
   getAccountByNumber(identification: string): Promise<IAccountDocument>;
   getAccounts(): Promise<IAccountDocument[]>;
 }
@@ -18,7 +19,7 @@ export default class AccountRepo implements IAccountRepo {
     this.model = model;
   }
 
-  async getAccountById(id: string): Promise<IAccountDocument | null> {
+  async getAccountById(id: string): Promise<IAccountDocumentOrNull> {
     return await this.model.findById(id);
   }
 

@@ -30,7 +30,13 @@ const userSchema: Schema<IUserDocument> = new Schema(
       }
     ]
   },
-  { timestamps: { createdAt: 'dateJoined', updatedAt: 'lastLogin' } }
+  {
+    collection: 'users',
+    timestamps: {
+      createdAt: 'dateJoined',
+      updatedAt: 'lastLogin'
+    }
+  }
 );
 
 userSchema.methods.setPassword = async function(

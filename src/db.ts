@@ -1,19 +1,13 @@
-import { ConnectionOptions, createConnection } from 'mongoose';
+import { connect } from 'mongoose';
 
-const options: ConnectionOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true
-};
+const URI =
+  'mongodb+srv://root:root@cluster0.xzwpb.gcp.mongodb.net/bankApp?retryWrites=true&w=majority';
 
-const connectDB = createConnection('', options);
-connectDB.then(
-  () => {
-    console.log('Connected correctly to DB Logica');
-  },
-  err => {
-    console.log(err);
+export default async (): Promise<void> => {
+  try {
+    await connect(URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('Connected correctly to mongodb.net/bankApp');
+  } catch (error) {
+    console.log(error);
   }
-);
-
-export default connectDB;
+};

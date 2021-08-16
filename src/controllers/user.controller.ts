@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { IUserRepo } from '../repositories/user.repo';
 
 export interface IUserController {
-  handleGetUsers(req: Request, res: Response): Promise<Response>;
+  handleGetUsers(req: Request, res: Response, next: NextFunction): Promise<any>;
 }
 
 /**
@@ -18,8 +18,16 @@ export default class UserController implements IUserController {
     this.repository = userRepo;
   }
 
-  async handleGetUsers(req: Request, res: Response): Promise<Response> {
-    const users = await this.repository.getUsers();
-    return res.status(200).json({ users });
+  async handleGetUsers(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const users = await this.repository.getUsers();
+      return res.status(200).json(users);
+    } catch (error) {
+      next(error);
+    }
   }
 }

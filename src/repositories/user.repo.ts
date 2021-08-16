@@ -1,4 +1,5 @@
 import { IUserModel, IUserDocument } from '../models/user.model';
+import { IUserDocumentOrNull } from '../Types';
 
 /**
  * @interface IUserRepo
@@ -6,7 +7,7 @@ import { IUserModel, IUserDocument } from '../models/user.model';
  **/
 
 export interface IUserRepo {
-  getUserById(id: string): Promise<IUserDocument | null>;
+  getUserById(id: string): Promise<IUserDocumentOrNull>;
   getUserByIdentificacion(identification: string): Promise<IUserDocument>;
   getUsers(): Promise<IUserDocument[]>;
 }
@@ -18,7 +19,7 @@ export default class UserRepo implements IUserRepo {
     this.model = model;
   }
 
-  async getUserById(id: string): Promise<IUserDocument | null> {
+  async getUserById(id: string): Promise<IUserDocumentOrNull> {
     return await this.model.findById(id);
   }
 

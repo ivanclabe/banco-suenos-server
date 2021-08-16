@@ -19,7 +19,7 @@ const transactionSchema: Schema<ITransactionDocument> = new Schema(
       ref: 'Account'
     }
   },
-  { timestamps: true }
+  { collection: 'transactions', timestamps: true }
 );
 
 const Transaction = model<ITransactionDocument, ITransactionModel>(
