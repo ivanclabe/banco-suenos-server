@@ -1,5 +1,10 @@
 import IAccount from './IAccount';
 
+type token = {
+  access: string;
+  token: string;
+};
+
 export default interface IUser {
   identification: string;
   hashedPassword: string;
@@ -7,6 +12,7 @@ export default interface IUser {
   lastname: string;
   account?: (IAccount | string)[];
   phone?: string;
+  tokens: token[];
   lastLogin: Date;
   dateJoined: Date;
 }

@@ -8,7 +8,8 @@ import { IUserDocumentOrNull } from '../Types';
 
 export interface IUserRepo {
   getUserById(id: string): Promise<IUserDocumentOrNull>;
-  getUserByIdentificacion(identification: string): Promise<IUserDocument>;
+  getUserByIdentificacion(identification: string): Promise<IUserDocumentOrNull>;
+  getUserByToken(token: string): Promise<IUserDocumentOrNull>;
   getUsers(): Promise<IUserDocument[]>;
 }
 
@@ -25,8 +26,12 @@ export default class UserRepo implements IUserRepo {
 
   async getUserByIdentificacion(
     identification: string
-  ): Promise<IUserDocument> {
+  ): Promise<IUserDocumentOrNull> {
     return await this.model.findByIdentification(identification);
+  }
+
+  async getUserByToken(token: string): Promise<IUserDocumentOrNull> {
+    return await this.model.findByToken(token);
   }
 
   async getUsers(): Promise<IUserDocument[]> {
