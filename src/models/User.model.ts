@@ -5,6 +5,20 @@ import IUser from '../interfaces/IUser';
 import { TOKEN_SECRET } from '../utils/constants';
 import * as messages from '../exceptions/messages';
 
+export interface IAuthenticationResult<T> {
+  user: T;
+  error: any;
+}
+
+interface IAuthenticateMethod<T> {
+  (username: string, password: string): Promise<IAuthenticationResult<T>>;
+  (
+    username: string,
+    password: string,
+    cb: (err: any, user: T | boolean, error: any) => void
+  ): void;
+}
+
 export interface IUserDocument extends IUser, Document {
   setPassword: (password: string) => Promise<void>;
   checkPassword: (password: string) => Promise<boolean>;
@@ -13,6 +27,19 @@ export interface IUserDocument extends IUser, Document {
 }
 
 export interface IUserModel extends Model<IUserDocument> {
+  authenticate(): (
+    username: string,
+    password: string,
+    cb: (err: any, user?: IUserDocument | boolean, error?: any) => void
+  ) => Promise<void>;
+  serializeUser(): (
+    user: IUserDocument,
+    cb: (err: any, id?: any) => void
+  ) => Promise<void>;
+  deserializeUser(): (
+    username: string,
+    cb: (err: any, user?: any) => void
+  ) => Promise<void>;
   findByIdentification(identification: string): Promise<IUserDocument>;
   findByToken(token: string): Promise<IUserDocument>;
   findByCredentials(email: string, password: string): Promise<IUserDocument>;
@@ -87,9 +114,8 @@ userSchema.methods.setPassword = async function(
 
 userSchema.methods.checkPassword = async function(
   password: string
-): Promise<boolean> {
-  const result = await bcrypt.compare(password, this.hashedPassword);
-  return result;
+): Promise<boolean | any> {
+  return await bcrypt.compare(password, this.hashedPassword);
 };
 
 userSchema.methods.generateAuthToken = async function(): Promise<string> {
@@ -109,6 +135,44 @@ userSchema.methods.removeToken = async function(token: string): Promise<void> {
 };
 
 // Functions on user collection
+userSchema.statics.authenticate = async function(
+  username: string,
+  password: string,
+  cb: (err: any, user?: IUserDocument | boolean, error?: any) => void
+): Promise<void> {
+  const UserModel = this as IUserModel;
+  try {
+    const user = await UserModel.findByCredentials(username, password);
+    if (!user) return cb(null, false);
+
+    return cb(null, user);
+  } catch (error) {
+    cb(error);
+  }
+};
+
+userSchema.statics.serializeUser = async function(
+  user: IUserDocument,
+  cb: (err: any, id?: any) => void
+): Promise<void> {
+  cb(null, user.id);
+};
+
+userSchema.statics.deserializeUser = async function(
+  id: string,
+  cb: (err: any, id?: any) => void
+): Promise<void> {
+  try {
+    const decerializedUser: IUserDocument | null = await this.findById(id);
+    if (!decerializedUser) {
+      return cb('User Not Found', null);
+    }
+    cb(null, decerializedUser);
+  } catch (error) {
+    cb(error, null);
+  }
+};
+
 userSchema.statics.findByToken = async function(
   token: string
 ): Promise<IUserDocument | null> {

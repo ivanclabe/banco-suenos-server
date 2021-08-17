@@ -10,6 +10,10 @@ export interface IUserRepo {
   getUserById(id: string): Promise<IUserDocumentOrNull>;
   getUserByIdentificacion(identification: string): Promise<IUserDocumentOrNull>;
   getUserByToken(token: string): Promise<IUserDocumentOrNull>;
+  getUserByCredentials(
+    username: string,
+    password: string
+  ): Promise<IUserDocumentOrNull>;
   getUsers(): Promise<IUserDocument[]>;
 }
 
@@ -32,6 +36,13 @@ export default class UserRepo implements IUserRepo {
 
   async getUserByToken(token: string): Promise<IUserDocumentOrNull> {
     return await this.model.findByToken(token);
+  }
+
+  async getUserByCredentials(
+    username: string,
+    password: string
+  ): Promise<IUserDocumentOrNull> {
+    return await this.model.findByCredentials(username, password);
   }
 
   async getUsers(): Promise<IUserDocument[]> {

@@ -1,16 +1,14 @@
 import { Router } from 'express';
 import User from '../models/User.model';
 import UserRepo from '../repositories/user.repo';
-import UserController, {
-  IUserController
-} from '../controllers/user.controller';
+import UserController from '../controllers/user.controller';
 
 const router = Router();
 
-const userCtrl: IUserController = new UserController(new UserRepo(User));
+const userCtrl = new UserController(new UserRepo(User));
 
-router.route('/').get(async (req, res, next) => {
-  return await userCtrl.handleGetUsers(req, res, next);
+router.route('/').get(async (...args) => {
+  return await userCtrl.handleGetUsers(...args);
 });
 
 router

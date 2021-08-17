@@ -1,6 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { IUserRepo } from '../repositories/user.repo';
 import { RequestFull } from '../Types';
+
 /**
  * @class AuthMiddleware
  **/
@@ -26,17 +27,18 @@ class AuthMiddleware {
     next: NextFunction
   ): Promise<any> {
     const bearerHeader = req.headers['authorization'];
-    if (!bearerHeader) next('Forbidden');
+    if (!bearerHeader) return next('Forbidden');
 
-    const token = bearerHeader?.split('')[1] || '';
+    const bearer = bearerHeader.split(' ');
+    const bearerToken = bearer[1] || '';
 
     try {
-      const user = await this.repository.getUserByToken(token);
+      const user = await this.repository.getUserByToken(bearerToken);
 
-      if (!user) next('');
+      if (!user) return next('');
 
-      // req.user = user;
-      req.token = token;
+      req.user = user;
+      req.token = bearerToken;
 
       next();
     } catch (error) {
